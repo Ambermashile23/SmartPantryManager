@@ -1,9 +1,9 @@
 package com.example.smartpantrymanger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,13 +40,18 @@ public class MainActivity extends AppCompatActivity {
         tvEmpty = findViewById(R.id.tvEmpty);
         FloatingActionButton fabAdd = findViewById(R.id.fabAdd);
 
-        adapter = new PantryAdapter(db.pantryItemDao().getAll(), item ->
-                Toast.makeText(this, item.name, Toast.LENGTH_SHORT).show());
+        // Tapping a row opens the edit screen and passes the item's id via an Intent
+        adapter = new PantryAdapter(db.pantryItemDao().getAll(), item -> {
+            Intent intent = new Intent(this, AddEditActivity.class);
+            intent.putExtra(AddEditActivity.EXTRA_ITEM_ID, item.id);
+            startActivity(intent);
+        });
         recyclerPantry.setLayoutManager(new LinearLayoutManager(this));
         recyclerPantry.setAdapter(adapter);
 
+        // The + button opens the same screen with no id, which means "add new"
         fabAdd.setOnClickListener(v ->
-                Toast.makeText(this, "Add screen coming next", Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(this, AddEditActivity.class)));
     }
 
     // Runs every time the screen comes back into view, so the list stays fresh
