@@ -40,6 +40,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Expiry date (optional, yyyy-mm-dd)"
+        android:textColor="#000000"
+        android:textColorHighlight="#666666"
+        android:textSize="18sp"
         android:inputType="date" />
 
     <Button
