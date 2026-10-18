@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         // The + button opens the same screen with no id, which means "add new"
         fabAdd.setOnClickListener(v ->
                 startActivity(new Intent(this, AddEditActivity.class)));
+        findViewById(R.id.btnRecipes).setOnClickListener(v ->
+                startActivity(new Intent(this, RecipeActivity.class)));
     }
 
     // Runs every time the screen comes back into view, so the list stays fresh
