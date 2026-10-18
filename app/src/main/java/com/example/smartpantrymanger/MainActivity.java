@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         db = AppDatabase.getInstance(this);
+        RecipeSeeder.seedIfEmpty(db);
         recyclerPantry = findViewById(R.id.recyclerPantry);
         tvEmpty = findViewById(R.id.tvEmpty);
         FloatingActionButton fabAdd = findViewById(R.id.fabAdd);
