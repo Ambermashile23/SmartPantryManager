@@ -1,9 +1,9 @@
 package com.example.smartpantrymanger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,15 +23,18 @@ public class RecipeActivity extends AppCompatActivity {
         TextView tvNoRecipes = findViewById(R.id.tvNoRecipes);
         TextView tvTitle = findViewById(R.id.tvRecipesTitle);
 
-        // For now this lists every recipe. Next we filter it with the strict-matching rule.
-        List<Recipe> recipeList = db.recipeDao().getAllRecipes();
-        tvTitle.setText("Recipes (" + recipeList.size() + ")");
+        // Only recipes that pass the strict-matching rule
+        List<Recipe> suggested = RecipeMatcher.getSuggestedRecipes(db);
+        tvTitle.setText("Suggested Recipes (" + suggested.size() + ")");
 
-        RecipeAdapter adapter = new RecipeAdapter(recipeList, recipe ->
-                Toast.makeText(this, recipe.name, Toast.LENGTH_SHORT).show());
+        RecipeAdapter adapter = new RecipeAdapter(suggested, recipe -> {
+            Intent intent = new Intent(this, RecipeDetailActivity.class);
+            intent.putExtra(RecipeDetailActivity.EXTRA_RECIPE_ID, recipe.id);
+            startActivity(intent);
+        });
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
 
-        tvNoRecipes.setVisibility(recipeList.isEmpty() ? View.VISIBLE : View.GONE);
+        tvNoRecipes.setVisibility(suggested.isEmpty() ? View.VISIBLE : View.GONE);
     }
 }
