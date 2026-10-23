@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="brand_blue">#89CFF0</color>
+    <color name="brand_blue_dark">#1E5F8C</color>
+    <color name="brand_orange">#FF8F00</color>
+    <color name="page_bg">#F4FAFF</color>
+    <color name="card_bg">#FFFFFF</color>
 </resources>

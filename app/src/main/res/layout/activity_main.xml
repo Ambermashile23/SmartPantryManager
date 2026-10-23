@@ -4,7 +4,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/page_bg">
+
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/brand_green"
+        android:padding="16dp"
+        android:text="Smart Pantry Manager"
+        android:textColor="#D3B66"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/tvExpiryBanner"
@@ -15,7 +30,7 @@
         android:textColor="#000000"
         android:textSize="16sp"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvHeader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -49,7 +64,7 @@
         android:layout_margin="16dp"
         android:contentDescription="Add ingredient"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#2E7D32"
+        app:backgroundTint="@color/brand_orange"
         app:tint="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -58,6 +73,9 @@
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@color/card_bg"
+        app:itemIconTint="@color/brand_blue_dark"
+        app:itemTextColor="@color/brand_blue_dark"
         app:menu="@menu/bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
