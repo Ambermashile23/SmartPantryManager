@@ -1,6 +1,8 @@
 package com.example.smartpantrymanger;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public class AddEditActivity extends AppCompatActivity {
 
@@ -48,6 +53,14 @@ public class AddEditActivity extends AppCompatActivity {
         spinnerUnit.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, units));
 
+        // Tap the expiry field to pick a date from a calendar; long-press to clear it
+        etExpiry.setOnClickListener(v -> showDatePicker());
+        etExpiry.setOnLongClickListener(v -> {
+            etExpiry.setText("");
+            Toast.makeText(this, "Expiry date cleared", Toast.LENGTH_SHORT).show();
+            return true;
+        });
+
         // If an id was passed in the Intent, we are editing an existing item
         int id = getIntent().getIntExtra(EXTRA_ITEM_ID, -1);
         if (id != -1) {
@@ -62,12 +75,34 @@ public class AddEditActivity extends AppCompatActivity {
                         spinnerUnit.setSelection(i);
                     }
                 }
-                btnDelete.setVisibility(android.view.View.VISIBLE);
+                btnDelete.setVisibility(View.VISIBLE);
             }
         }
 
         btnSave.setOnClickListener(v -> saveItem());
         btnDelete.setOnClickListener(v -> confirmDelete());
+    }
+
+    // Opens a calendar dialog and writes the chosen date as yyyy-mm-dd
+    private void showDatePicker() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        // If a date is already set, open the calendar on that date
+        String current = etExpiry.getText().toString();
+        if (current.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            String[] parts = current.split("-");
+            year = Integer.parseInt(parts[0]);
+            month = Integer.parseInt(parts[1]) - 1;
+            day = Integer.parseInt(parts[2]);
+        }
+
+        new DatePickerDialog(this, (view, y, m, d) -> {
+            etExpiry.setText(String.format(Locale.US, "%04d-%02d-%02d", y, m + 1, d));
+            etExpiry.setError(null);
+        }, year, month, day).show();
     }
 
     private void saveItem() {
@@ -104,7 +139,7 @@ public class AddEditActivity extends AppCompatActivity {
             item.quantity = qty;
             item.unit = unit;
             item.expiryDate = expiry;
-            db.pantryItemDao().insert(item);       // Create
+            db.pantryItemDao().insert(item);        // Create
             Toast.makeText(this, "Ingredient added", Toast.LENGTH_SHORT).show();
         } else {
             editingItem.name = name;
