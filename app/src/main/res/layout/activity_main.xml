@@ -11,7 +11,7 @@
         android:id="@+id/tvHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/brand_green"
+        android:background="@color/brand_blue"
         android:padding="16dp"
         android:text="Smart Pantry Manager"
         android:textColor="#D3B66"
