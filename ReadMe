@@ -1,0 +1,58 @@
+# Smart Pantry Manager
+
+A Java Android app that helps reduce food waste by suggesting recipes based strictly on the ingredients the user already has at home.
+
+**Module:** Mobile App Development 700 (Richfield)
+**Student:** 402311073 Amber Mashile
+
+## What the app does
+- Add, edit and delete pantry items (name, quantity, unit and an optional expiry date chosen from a calendar)
+- Pantry list screen using a RecyclerView with a custom Adapter, filled from the database
+- 20 pre-loaded South African recipes, seeded on first run
+- Suggested Recipes screen that shows ONLY the recipes the user can make right now
+- Message shown when no recipes match: "No recipes match your pantry yet - add more ingredients"
+- Recipe detail screen with the full ingredient list and numbered method
+- Settings screen with an expiring-soon alert toggle (saved with SharedPreferences)
+- Bottom navigation bar linking Pantry, Recipes and Settings
+- Input validation on the Add/Edit ingredient form
+
+## The strict-matching rule
+A recipe is only suggested if EVERY ingredient it needs is in the pantry in at least the required quantity. If one ingredient is missing or short, the recipe is hidden. There are no partial matches.
+
+The matching is made robust against everyday messiness:
+- Capital letters and extra spaces are ignored
+- Simple plurals match (tomato and tomatoes, chilli and chillies)
+- Units are converted: g, kg, ml, l, cup, tbsp and tsp (1 g is treated as roughly 1 ml)
+- Quantities of the same ingredient are added together (for example 300 g plus 0.2 kg)
+- Items counted in pcs only match other pcs
+
+The logic is in `RecipeMatcher.java`.
+
+## Database: SQLite using the Room library
+I chose SQLite with Room because it stores data locally on the device, works offline, needs no account or server, and keeps the data after the app is closed and reopened. Room also checks queries when the app is compiled and keeps the CRUD code short and readable.
+
+Tables:
+- pantry_items (id, name, quantity, unit, expiryDate)
+- recipes (id, name, steps)
+- recipe_ingredients (id, recipeId, name, quantity, unit)
+
+## Project structure (main classes)
+- MainActivity - pantry list, bottom navigation, expiry banner
+- AddEditActivity - add, edit and delete an ingredient, with validation and a date picker
+- RecipeActivity - Suggested Recipes list
+- RecipeDetailActivity - ingredients and method for one recipe
+- SettingsActivity - expiry alert toggle
+- PantryAdapter and RecipeAdapter - RecyclerView adapters
+- AppDatabase, PantryItemDao, RecipeDao - Room database and queries
+- RecipeMatcher - the strict-matching logic
+- RecipeSeeder - the 20 pre-loaded recipes
+
+## Setup and run instructions
+1. Install Android Studio and Git.
+2. Clone the repository: `git clone https://github.com/Ambermashile23/SmartPantryManager.git`
+3. Open the project folder in Android Studio and wait for the Gradle sync to finish.
+4. Create an emulator (Tools > Device Manager) or connect an Android phone with USB debugging turned on.
+5. Press Run. The minimum supported version is Android 7.0 (API 24).
+
+## Built with
+Java, Android Studio, Room (SQLite), RecyclerView and Material Components.
